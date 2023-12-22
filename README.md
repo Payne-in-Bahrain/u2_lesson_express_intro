@@ -110,13 +110,13 @@ const app = express();
 
 // Define a "root" route directly on app
 // Tomorrow, we'll use best practice routing
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>');
 });
 
 // Tell the app to listen on port 3000
 // for HTTP requests from clients
-app.listen(3000, function () {
+app.listen(3000, () => {
   console.log('Listening on port 3000');
 });
 ```
@@ -151,12 +151,12 @@ const app = express();
   
   
 // Mount routes
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>');
 });
   
 // Tell the app to listen on port 3000
-app.listen(3000, function() {
+app.listen(3000, () => {
   console.log('Listening on port 3000');
 });
 ```
@@ -167,7 +167,7 @@ Let's make a minor update to our root route:
 
 ```js
 // Mount routes
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.send('<h1>Hello Express</h1>');
 });
 ```
@@ -219,7 +219,7 @@ In the next Express lesson, we'll learn a preferred way of defining routes using
 The second argument provided to `app.get()` is a callback function that is executed by Express when the server receives an HTTP Request that matches the route:
 
 ```js
-app.get('/', function(req, res, next) {
+app.get('/', (req, res, next) => {
   res.send('<h1>Hello Express</h1>');
 });
 ```
@@ -258,11 +258,11 @@ The callback function defines two parameters conventionally named `req` & `res`:
 Assuming the following two routes:
 
 ```js
-app.get('/cars', function(req, res) {
+app.get('/cars', (req, res) => {
   res.send("Here's a list of my cars...");
 });
 
-app.post('/cars', function(req, res) {
+app.post('/cars', (req, res) => {
   res.send('Thanks for the new car!');
 });
 ```
@@ -354,7 +354,7 @@ Update the `<title>` as shown above and add an `<h1>` inside `<body>` so that we
 Okay, now let's refactor the `GET /home` route's callback to render our new `home.ejs` template:
 
 ```js
-app.get('/home', function(req, res) {
+app.get('/home', (req, res) => {
   res.render('home');
 });
 ```
@@ -450,10 +450,13 @@ const todos = [
 Now let's export a `getAll()` method that can be used by any other module to obtain the To Dos:
 
 ```js
+
+const getAll = () => {
+    return todos
+}
+
 module.exports = {
-  getAll: function() {
-    return todos;
-  }
+  getAll
 };
 ```
 
@@ -473,10 +476,9 @@ const todoDb = require('./data/todo-db');
 If we want to be able to implement the "To Do List" functionality, we're going to need another another route:
 
 ```js
-app.get('/todos', function(req, res) {
-  res.render('todos/index', {
-    todos: todoDb.getAll()
-  });
+app.get('/todos', (req, res) => {
+  const todos = todoDb.getAll()
+  res.render('todos/index', { todos });
 });
 ```
 
@@ -503,7 +505,7 @@ Now let's code the `todos/index.ejs` view. Start by copying over the HTML from `
 <body>
   <h1>All To Dos</h1>
   <ul>
-    <% todos.forEach(function(t) { %>
+    <% todos.forEach( todo => { %>
       <li>
         <%= t.todo %>
           - 
@@ -531,7 +533,7 @@ Currently, if we browse to the root route, we see "Hello Express", however, we c
 Refactor the root route as follows:
 
 ```js
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.redirect('/home');
 });
 ```
