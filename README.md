@@ -507,9 +507,9 @@ Now let's code the `todos/index.ejs` view. Start by copying over the HTML from `
   <ul>
     <% todos.forEach( todo => { %>
       <li>
-        <%= t.todo %>
+        <%= todo.todo %>
           - 
-        <%= t.done ? 'done' : 'not done' %>
+        <%= todo.done ? 'done' : 'not done' %>
       </li>
     <% }); %>
   </ul>
